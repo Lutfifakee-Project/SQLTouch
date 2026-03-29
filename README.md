@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/version-2.0.0-blue" />
   <img src="https://img.shields.io/badge/python-3.7+-green" />
   <img src="https://img.shields.io/badge/license-MIT-red" />
-  <img src="https://img.shields.io/github/stars/lutfifakeexone/SQLTouch?style=social" />
+  <img src="https://img.shields.io/github/stars/Lutfifakee-Project/SQLTouch?style=social" />
 </p>
 
 <p>
